@@ -1,5 +1,7 @@
 const admin = require('firebase-admin');
 const ContenedorFirebase = require('../../Contenedores/ContenedorFirebase.js')
+const ProductosDaoFirebase = require('../ProductosDao/ProductosDaoFirebase.js')
+const productosDao = new ProductosDaoFirebase()
 
 class CarritoDaoFirebase extends ContenedorFirebase {
     constructor() {
@@ -7,18 +9,37 @@ class CarritoDaoFirebase extends ContenedorFirebase {
     }
 
     saveCart = async () => {
-        const doc = this.colleccion.doc()
-        await doc.create({
-            timestamp: admin.firestore.FieldValue.serverTimestamp(),
-            products: [],
-        })
+        try {
+            const doc = this.colleccion.doc()
+            await doc.create({
+                timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                products: [],
+            })
+        } catch (err) {
+            throw new Error(`Error al guardar la información: ${err}`)
+        }
     }
 
-    saveCartItem = async (id) => {
-        const cart = this.getById(id)
-        console.log(cart)
-
+    saveCartItem = async (id, product) => {
+        try {
+            const cart = await this.getById(id)
+            if (cart) {
+                const producto = await productosDao.getById(product.id)
+                if (producto.name) {
+                    cart.products.push({
+                        ...product
+                    })
+                    await this.update(id, cart)
+                    return cart
+                } else {
+                    return 'Producto no encontrado'
+                }
+            } else {
+                return 'Carrito no encontrado'
+            }
+        } catch (err) {
+            throw new Error(`Error al guardar la información: ${err}`)
+        }
     }
-
 }
 module.exports = CarritoDaoFirebase

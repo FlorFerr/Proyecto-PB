@@ -40,7 +40,7 @@ class CarritoDaoArchivo extends ContenedorArchivo {
                 timestamp
             }
         } catch (err) {
-            console.log(`Hubo un error al guardar el carrito: ${err.message}`)
+            throw new Error(`Error al guardar la información: ${err}`)
         }
     }
 
@@ -65,7 +65,7 @@ class CarritoDaoArchivo extends ContenedorArchivo {
                 }
             }
         } catch (err) {
-            console.log(`Hubo un error al agregar el producto: ${err.message}`)
+            throw new Error(`Error al guardar la información: ${err}`)
         }
     }
 
@@ -92,7 +92,7 @@ class CarritoDaoArchivo extends ContenedorArchivo {
                 }
             }
         } catch (err) {
-            console.log(`Hubo un error al agregar el producto: ${err.message}`)
+            throw new Error(`Error al eliminar la información: ${err}`)
         }
     }
 }
