@@ -41,5 +41,27 @@ class CarritoDaoFirebase extends ContenedorFirebase {
             throw new Error(`Error al guardar la información: ${err}`)
         }
     }
+
+    deleteCartItem = async (id, product) => {
+        try {
+            const cart = await this.getById(id)
+            if (cart) {
+                const found = cart.products.find(element => element.id == product.id)
+                console.log(found)
+                if (found) {
+                    const deleteProduct = cart.products.filter(element => element.id != product.id)
+                    cart.products = deleteProduct
+                    await this.update(id, cart)
+                    return cart
+                } else {
+                    return 'Producto no encontrado'
+                }
+            } else {
+                return 'Carrito no encontrado'
+            }
+        } catch (err) {
+            throw new Error(`Error al guardar la información: ${err}`)
+        }
+    }
 }
 module.exports = CarritoDaoFirebase
