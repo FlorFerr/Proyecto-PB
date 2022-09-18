@@ -14,5 +14,11 @@ class CarritoDaoFirebase extends ContenedorFirebase {
         })
     }
 
+    saveCartItem = async (id) => {
+        const cart = this.getById(id)
+        console.log(cart)
+
+    }
+
 }
 module.exports = CarritoDaoFirebase
