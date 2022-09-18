@@ -73,11 +73,19 @@ class CarritoDaoArchivo extends ContenedorArchivo {
         try {
             let carts = await this.getAll()
             const objIndex = carts.findIndex(item => item.id == id)
+            const producto = await productosDao.getById(product.id)
             if (carts[objIndex]) {
-                const deleteProduct = carts[objIndex].productos.filter(c => c.id != product.id)
-                carts[objIndex].productos = deleteProduct
-                await fs.promises.writeFile(this.route, JSON.stringify(carts, null, 2, 'utf-8'))
-                return carts[objIndex]
+                if (producto.name) {
+                    const deleteProduct = carts[objIndex].productos.filter(c => c.id != producto.id)
+                    carts[objIndex].productos = deleteProduct
+                    await fs.promises.writeFile(this.route, JSON.stringify(carts, null, 2, 'utf-8'))
+
+                    return carts[objIndex]
+                } else {
+                    return {
+                        error: "Producto no encontrado"
+                    }
+                }
             } else {
                 return {
                     error: "Carrito no encontrado"
