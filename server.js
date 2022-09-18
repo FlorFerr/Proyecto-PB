@@ -1,28 +1,30 @@
-const { async } = require("@firebase/util");
-var admin = require("firebase-admin");
+const dotenv = require('dotenv').config()
+const express = require('express')
+const app = express()
+const PORT = process.env.PORT
 
-var serviceAccount = require("./pb-coder-firebase-adminsdk-9vrxp-9e1c60aac0.json");
+const routerProductos = require('./Routes/ProductosRoute.js')
+const routerCarritos = require('./Routes/CarritoRoute.js')
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+}))
 
-console.log('Firestore conectado')
+app.use('/api/productos', routerProductos)
+app.use('/api/carrito', routerCarritos)
 
-const CRUD = async ()=>{
-    const db = admin.firestore()
-    query = db.collection('productos')
+app.get('*', (req, res) => {
+    res.send({
+        error: -2,
+        descripcion: `Ruta: ${req.url} - Método: ${req.method} no implementados`
+    })
+})
 
-    try{
-        const doc = query.doc()
-        await doc.create({
-            title: 'Producto1',
-            price: 123
-        })
-        console.log('Usuario creado')
+const server = app.listen(PORT, () => {
+    console.log(`Puerto: ${server.address().port}`)
+})
 
-    }catch(error){
-        console.log(error)
-    }
-}
-CRUD()
+server.on('error', err => {
+    console.log(err)
+})
