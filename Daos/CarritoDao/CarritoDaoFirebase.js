@@ -47,7 +47,6 @@ class CarritoDaoFirebase extends ContenedorFirebase {
             const cart = await this.getById(id)
             if (cart) {
                 const found = cart.products.find(element => element.id == product.id)
-                console.log(found)
                 if (found) {
                     const deleteProduct = cart.products.filter(element => element.id != product.id)
                     cart.products = deleteProduct

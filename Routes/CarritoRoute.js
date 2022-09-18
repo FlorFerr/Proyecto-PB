@@ -13,16 +13,20 @@ const {
 
 const routerProductos = Router()
 
-routerProductos.get('/', getCarts)
-
 routerProductos.get('/:id', getCartById)
+routerProductos.delete('/:id', deleteCart)
 
+routerProductos.get('/', getCarts)
 routerProductos.post('/', postCart)
 
 routerProductos.post('/:id/productos', postProductToCart)
-
-routerProductos.delete('/:id', deleteCart)
-
 routerProductos.delete('/:id/productos', deleteProductToCart)
+
+
+
+
+
+
+
 
 module.exports = routerProductos

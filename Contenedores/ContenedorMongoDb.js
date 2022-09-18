@@ -34,7 +34,7 @@ class ContenedorMongoDb {
             if (product) {
                 return product
             } else {
-                return "Producto no encontrado"
+                return "Elemento no encontrado"
             }
         } catch (err) {
             throw new Error(`Error al obtener la información: ${err}`)
@@ -61,7 +61,7 @@ class ContenedorMongoDb {
                 })
                 return 'Producto eliminado'
             } else {
-                return "Producto no encontrado"
+                return "Elemento no encontrado"
             }
         } catch (err) {
             throw new Error(`Error al eliminar: ${err}`)
@@ -70,10 +70,10 @@ class ContenedorMongoDb {
 
     update = async (id, product) => {
         try {
-            let product = await this.model.findOne({
+            let producto = await this.model.findOne({
                 _id: id
             });
-            if (product) {
+            if (producto) {
                 await this.model.updateOne({
                     _id: id
                 }, {
@@ -85,7 +85,7 @@ class ContenedorMongoDb {
                 })
                 return product
             } else {
-                return "Producto no encontrado"
+                return "Elemento no encontrado"
             }
         } catch (err) {
             throw new Error(`Error al actualizar: ${err}`)
